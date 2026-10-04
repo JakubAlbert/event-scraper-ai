@@ -1,0 +1,22 @@
+# Local credentials and configuration
+.env
+.env.*
+!.env.example
+*.local.js
+*.pem
+*.key
+
+# Editor and agent settings
+.vscode/
+.idea/
+.codex/
+.agents/
+.aws/
+
+# Generated and local files
+node_modules/
+*.log
+*.zip
+EventImages/
+.DS_Store
+Thumbs.db

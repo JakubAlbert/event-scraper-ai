@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #00a884;
+      --primary-hover: #008f6f;
+      --text-color: #1c2b36;
+      --background-color: #f8fafc;
+      --input-bg: #ffffff;
+    }
+
+    body {
+      width: 360px;
+      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      margin: 0;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .extension-title {
+      color: var(--primary-color);
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin: 0;
+      text-decoration: none;
+    }
+
+    .extension-version {
+      display: block;
+      margin-top: 3px;
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin: 15px 0 10px 0;
+      color: var(--text-color);
+      border-bottom: 2px solid var(--primary-color);
+      display: inline-block;
+      padding-bottom: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .form-col {
+      flex: 1;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-color);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--text-color);
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(0, 168, 132, 0.15);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: var(--primary-hover);
+    }
+
+    #save-btn[data-state="saved"] {
+      background-color: #007a5f;
+    }
+
+    #save-btn[data-state="error"] {
+      background-color: #b42318;
+    }
+
+    #extract-list-btn {
+      background-color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+
+    #extract-list-btn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    #list-container {
+      display: none;
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: #e2e8f0;
+      border-radius: 4px;
+    }
+
+    #extract-single-btn {
+      background-color: var(--text-color);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+
+    input:disabled, select:disabled {
+      opacity: 0.7;
+    }
+
+    #extraction-status {
+      min-height: 18px;
+      margin: 10px 0 15px;
+      font-size: 12px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    #extraction-status[data-kind="error"] { color: #b42318; }
+    #extraction-status[data-kind="warning"] { color: #805600; }
+    #extraction-status[data-kind="success"] { color: #007a5f; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="extension-title">Event Scraper</div>
+    <span class="extension-version">v2.1.1</span>
+  </div>
+  <button id="extract-single-btn" type="button">Načítať podujatie znova</button>
+  <button id="extract-list-btn" type="button">Načítať všetky zo zoznamu</button>
+  <p id="extraction-status" role="status" aria-live="polite" aria-atomic="true"></p>
+  <div id="list-container">
+      <label for="event-selector">Vyberte podujatie zo zoznamu:</label>
+      <select id="event-selector">
+          <option value="">Čakám na dáta...</option>
+      </select>
+  </div>
+
+  <h3>Kedy</h3>
+  <div class="form-row">
+    <div class="form-col">
+      <label for="event-date-from">Od</label>
+      <input type="date" id="event-date-from">
+    </div>
+    <div class="form-col">
+      <label for="event-date-to">Do</label>
+      <input type="date" id="event-date-to">
+    </div>
+  </div>
+
+  <h3>Kde</h3>
+  <div class="form-group">
+    <label for="event-venue">Názov miesta</label>
+    <input type="text" id="event-venue">
+  </div>
+  
+  <div class="form-row">
+    <div class="form-col">
+      <label for="event-street">Ulica</label>
+      <input type="text" id="event-street">
+    </div>
+    <div class="form-col">
+      <label for="event-number">Číslo</label>
+      <input type="text" id="event-number">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="event-city">Obec</label>
+    <input type="text" id="event-city">
+  </div>
+
+  <div class="form-group" style="margin-top: 15px;">
+    <label for="event-title">Názov podujatia</label>
+    <input type="text" id="event-title">
+  </div>
+
+  <h3>Kontakt</h3>
+  <div class="form-group">
+    <label for="event-email">E-mail</label>
+    <input type="email" id="event-email" placeholder="email@example.com">
+  </div>
+  
+  <div class="form-group">
+    <label for="event-web">Web podujatia</label>
+    <input type="url" id="event-web">
+  </div>
+
+  <button id="save-btn" type="button" disabled>Uložiť</button>
+
+  <script src="event-data.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
